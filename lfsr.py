@@ -17,7 +17,7 @@ class Analyzer:
         num = int(stream, 2)
         self.random_num = (num % (num_range[-1] - num_range[0])) + num_range[0]
 
-    def randomness(self):
+    def randomness(self) -> None:
 
         stream = self.stream 
         stream_length = len(stream)
@@ -26,7 +26,7 @@ class Analyzer:
             '1': f"{round(100*count_func(stream, '1') / stream_length, 2)}%"
         }
 
-    def randomness_plot(self):
+    def randomness_plot(self) -> None:
         stream = self.stream
         xdata = [0]
         ydata = [100.0 if stream[0]=='1' else 0.0]
@@ -44,7 +44,7 @@ class Analyzer:
         plt.tight_layout()
         plt.show()
 
-    def plot_stream(self, **kwargs):
+    def plot_stream(self, **kwargs) -> None:
         """
         plot bits vs state in LFSR stream
         """
@@ -75,7 +75,7 @@ class LFSR(Analyzer):
         if all(abs(pos) < degree for pos in tap_positions): # LSb numbering => |tap position| < degree
             return super(LFSR, cls).__new__(cls)
         else:
-            print("Invalid tap positions")
+            raise IndexError("Invalid tap positions. Positioning is 0-indexed.")
         
     def __init__(self, **kwargs) -> None:
         """
@@ -125,17 +125,18 @@ class LFSR(Analyzer):
                 if self.period == 'Not found':
                     self.period = count
 
-    def generate(self, bitseq, iterations):
+    def generate(self, bitseq: str, iterations: int) -> None:
         if isinstance(bitseq, str):
             bitseq = int(bitseq, 2) 
 
         self.period = "Not found"
         tap_positions = self.tap_positions
         degree = self.degree
+
         count = 0
-        self.log = []
+        log = []
+        stream = f'{first_output}'
         first_output = format(bitseq & 1, '01b')
-        self.stream = f'{first_output}'
         state = int(bin(bitseq), 2)
         for _ in range(iterations):
             new_bit = 0
@@ -150,8 +151,8 @@ class LFSR(Analyzer):
             output_bit = format(output, f'01b')
 
             count += 1
-            self.log += [state_bits]
-            self.stream += str(output_bit)
+            log += [state_bits]
+            stream += str(output_bit)
 
             if state_bits == format(bitseq, f'0{degree}b'):
                 if self.period == 'Not found':
@@ -160,6 +161,9 @@ class LFSR(Analyzer):
             if count>(2**degree-1):
                 if self.period == 'Not found':
                     self.period = 'sub-maximal'
+        
+        self.log = log
+        self.stream = stream
 
 class LinSolve:
 
@@ -337,4 +341,3 @@ class CustomLFSR(Analyzer):
         tap_positions = self.tap_positions
         degree = self.degree
         func = self.func
-        
