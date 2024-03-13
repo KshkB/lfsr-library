@@ -8,7 +8,7 @@ class Analyzer:
     def __init__(self) -> None:
         pass
 
-    def generate_num(self, num_range: list) -> None:
+    def generate_num(self, num_range: list[int]) -> None:
         """
         pseudo-random number generator in range num_range
         for num_range pass list [start, end]
@@ -100,6 +100,9 @@ class LFSR(Analyzer):
         taps are all zero except for the last and second-last entries
         i.e., tap_positions = [m-2, m-1] for degree m, so that input_{n+1} = output_n XOR MSb_{n+1}
         """
+        if isinstance(bitseq, str):
+            bitseq = int(bitseq, 2) 
+
         self.period = 'Not found'
         degree = self.degree
         self.log = []
@@ -123,6 +126,9 @@ class LFSR(Analyzer):
                     self.period = count
 
     def generate(self, bitseq, iterations):
+        if isinstance(bitseq, str):
+            bitseq = int(bitseq, 2) 
+
         self.period = "Not found"
         tap_positions = self.tap_positions
         degree = self.degree
@@ -290,11 +296,7 @@ class MultiLFSR(Analyzer):
         lfsrs = kwargs['lfsr_list']
         degree = kwargs['degree']
         if all([lfsr.degree == degree for lfsr in lfsrs]):
-            tap_positions = kwargs['tap_positions']
-            if all(abs(pos) < degree for pos in tap_positions):
-                return super(MultiLFSR, cls).__new__(cls)
-            else:
-                print("Invalid tap positions")
+            return super(MultiLFSR, cls).__new__(cls)
         else:
             print("The degree of all LFSRs must coincide")
 
@@ -314,15 +316,25 @@ class MultiLFSR(Analyzer):
                 lfsr.generate(curr_state, 1)
                 new_state = lfsr.log[-1]
                 curr_state = new_state
-                curr_output = lfsr.stream
+                curr_output = lfsr.stream[-1]
 
             self.log += [curr_state]
             self.stream += curr_output
 
-class CustomLFSR:
+class CustomLFSR(Analyzer):
     """
     pass custom function Z_2^{num_taps} -> Z_2 to generate new input
     in LFSR, this function is poly-XOR
     """
     def __init__(self, **kwargs) -> None:
-        pass 
+        
+        self.degree = kwargs['degree'] 
+        self.tap_positions = kwargs['tap_positions']
+        self.func = kwargs['func']
+
+    def generate(self, seed, iterations):
+        
+        tap_positions = self.tap_positions
+        degree = self.degree
+        func = self.func
+        
