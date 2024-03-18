@@ -1,18 +1,16 @@
-from context import LinSolve
+from context import Analyser, LFSR
 
 BITSTREAM = '10111011100101010010100010010110100011001110011110001101100001000101110101111011011111000011010011010110110101000001001110110010010011000000111010010001110001000000010110001111010000111111110010000101001111101010101110000011000101011001100101111110111100110111011100101010010100010010110100011001110011110001101100001000101110101111011011111000011010011010110110101000001001110110010010011000000111010'
 DEGREE = 8
 
-capture = {
-    'bitstream': BITSTREAM,
-    'degree': DEGREE
-}
-solver = LinSolve(**capture)
-solver.solve()
+analyser: Analyser = Analyser(stream=BITSTREAM, degree=DEGREE)
+analyser.lin_solve()
+lfsr = LFSR(degree=analyser.degree, tap_positions=analyser.tap_positions)
+
+def main():
+    print(f"tap vector: {analyser.solution}")
+    print(f"tap positions: {analyser.tap_positions}")
+    print(f"feedback polynomial: {lfsr.feedback_polynomial}")
 
 if __name__ == '__main__':
-    try:
-        print(f"LFSR degree: {solver.degree}\tTaps: {solver.solution}\tTap positions: {solver.tap_positions}")
-        solver.solution_validate()
-    except AttributeError:
-        pass
+    main()

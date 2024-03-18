@@ -1,19 +1,29 @@
 from context import LFSR
-"""
-Test for LFSR.generate_classical
-"""
-DEGREE = 10
-TAP_POSITIONS = [2, 3, 4, 9]
-SEED = 0b1011010001
-ITERATIONS = 5000
-RANGE = [12, 106]
 
-lfsr = LFSR(degree=DEGREE, tap_positions=TAP_POSITIONS)
+SEED = 0b110111001
+ITERATIONS = 10000
+try:
+    DEGREE: int = len(bin(SEED))-2
+except TypeError:
+    DEGREE: int = len(SEED) 
+
+TAPS: list[int] = [1, 4]
+
+lfsr: LFSR = LFSR(degree=DEGREE, tap_positions=TAPS)
 lfsr.generate(bitseq=SEED, iterations=ITERATIONS)
-lfsr.randomness()
-lfsr.generate_num(RANGE)
+
+RANGE: range = range(100, 999)
+lfsr.generate_num(num_range=RANGE)
+lfsr.randomness(SIG_FIGS=2)
+
+def main():
+    print(f"""
+    (pseudo) random number: {lfsr.random_num}
+    """)
+    for k, v in lfsr.randomness_dict.items():
+        print(f"probability of {k} = {v}")
+    for k, v in lfsr.LaplaceSuccession.items():
+        print(f"Laplace succession probability of {k} = {v}")
 
 if __name__ == '__main__':
-    print(lfsr.randomness_dict) 
-    print(lfsr.random_num)
-    lfsr.randomness_plot()
+    main()

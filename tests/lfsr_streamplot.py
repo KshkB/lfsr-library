@@ -1,14 +1,19 @@
 from context import LFSR
-"""
-Test for method LFSR.plot_stream
-"""
-TAP_POSITIONS = [1, 17, 20]
-SEED = 0b100111101101101101101
-DEGREE = len(bin(SEED))-2
-ITERATIONS = 200
 
-lfsr = LFSR(degree=DEGREE, tap_positions=TAP_POSITIONS)
+SEED = 0b110111001
+ITERATIONS = 100
+try:
+    DEGREE: int = len(bin(SEED))-2
+except TypeError:
+    DEGREE: int = len(SEED) 
+
+TAPS: list[int] = [1, 4]
+
+lfsr: LFSR = LFSR(degree=DEGREE, tap_positions=TAPS)
 lfsr.generate(bitseq=SEED, iterations=ITERATIONS)
 
-if __name__ == '__main__':
+def main():
     lfsr.plot_stream()
+
+if __name__ == '__main__':
+    main()

@@ -18,17 +18,15 @@ lfsr4 = LFSR(degree=DEGREE, tap_positions=taps4)
 
 lfsrs = [lfsr1, lfsr2, lfsr3, lfsr4]
 multi = MultiLFSR(lfsr_list=lfsrs, degree=DEGREE)
-
 multi.generate(seed=SEED, iterations=ITERATIONS)
-multi.randomness()
 
-stream = multi.stream
-log = multi.log
-randomness_dict = multi.randomness_dict
+def main():
+    print(f"""
+    stream: {multi.stream}\n
+    period: {multi.period}
+    """)
+    for state in multi.log:
+        print(state)
+
 if __name__ == '__main__':
-    print(stream)
-    print(randomness_dict)
-    multi.randomness_plot()
-    # for entry in log:
-    #     print(entry)
-   
+    main()
