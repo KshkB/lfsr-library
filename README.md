@@ -7,10 +7,10 @@ This is accompanied by Jupyter notebooks, serving as ad hoc documentation, demon
 
 You can view these notebooks with Jupyter's online notebook viewer at the links below.
 
-  - Notebook 1: [link](https://nbviewer.org/github/KshkB/lfsr-library/blob/main/notebook1_prelims.ipynb)
-  - Notebook 2: [link](https://nbviewer.org/github/KshkB/lfsr-library/blob/main/notebook2_randomness.ipynb)
-  - Notebook 3: [link](https://nbviewer.org/github/KshkB/lfsr-library/blob/main/notebook3_lfsrinvert.ipynb)
-  - Notebook 4: [link](https://nbviewer.org/github/KshkB/lfsr-library/blob/main/notebook4_multilfsr.ipynb)
+  - Notebook 1 link: [preliminaries](https://nbviewer.org/github/KshkB/lfsr-library/blob/main/notebook1_prelims.ipynb)
+  - Notebook 2 link: [randomness](https://nbviewer.org/github/KshkB/lfsr-library/blob/main/notebook2_randomness.ipynb)
+  - Notebook 3 link: [inversion](https://nbviewer.org/github/KshkB/lfsr-library/blob/main/notebook3_lfsrinvert.ipynb)
+  - Notebook 4 link: [multilfsrs](https://nbviewer.org/github/KshkB/lfsr-library/blob/main/notebook4_multilfsr.ipynb)
 
 ## Requirements
 
